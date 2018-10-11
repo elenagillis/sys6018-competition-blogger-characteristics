@@ -56,3 +56,12 @@ predictions <- data.frame('user.id' <- test$doc_id, 'age' <- age)
 colnames(predictions) <- c('user.id', 'age')
 
 write.csv(predictions, file = 'predictions_3.csv', row.names = F)
+
+# k-fold CV
+library(caret)
+library(dplyr)
+train_control <- trainControl(method="repeatedcv", number=10, repeats=3)
+# train the model
+model <- train(age~., data=train_tfidf_model_data, trControl=train_control, method="lm")
+# summarize results
+print(model)
